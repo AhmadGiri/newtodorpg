@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { Quest, Difficulty } from '../types/quest';
 import { QuestCard } from '../components/quest/QuestCard';
 import { PlusCircle, Filter, Swords } from 'lucide-react';
-import { getExpByDifficulty } from '../utils/exp';
 
 interface QuestsProps {
   quests: Quest[];

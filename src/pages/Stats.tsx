@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quest, PlayerStats, Achievement } from '../types/quest';
+import type { Quest, PlayerStats, Achievement } from '../types/quest';
 import { Card } from '../components/ui/Card';
 import { BarChart3, Shield, Flame, Swords, Award } from 'lucide-react';
 
