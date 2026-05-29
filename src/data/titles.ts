@@ -1,3 +1,5 @@
+import type { InventoryItem } from '../types/quest';
+
 export const PLAYER_TITLES = [
   "E-Rank Awakening",
   "Dungeon Explorer",
@@ -8,7 +10,7 @@ export const PLAYER_TITLES = [
   "Supreme Necromancer"
 ] as const;
 
-export const INITIAL_INVENTORY = [
+export const INITIAL_INVENTORY: InventoryItem[] = [
   { id: '1', name: 'Mana Potion', description: 'Restores instant mental stamina for coding.', rarity: 'COMMON', icon: 'CupSoda', quantity: 5 },
   { id: '2', name: 'Shadow Blade', description: 'Cuts through legacy spaghetti code instantly.', rarity: 'EPIC', icon: 'Sword', quantity: 1 },
   { id: '3', name: 'Hunter Badge', description: 'Proof of an officially registered System User.', rarity: 'RARE', icon: 'ShieldAlert', quantity: 1 },

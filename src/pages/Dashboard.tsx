@@ -1,5 +1,4 @@
-import React from 'react';
-import { Quest, PlayerStats, InventoryItem, Achievement } from '../types/quest';
+import type { Quest, PlayerStats, InventoryItem, Achievement } from '../types/quest';
 import { ProfileCard } from '../components/profile/ProfileCard';
 import { Card } from '../components/ui/Card';
 import * as Icons from 'lucide-react';

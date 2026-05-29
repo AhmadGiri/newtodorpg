@@ -1,4 +1,4 @@
-import { Difficulty } from '../types/quest';
+import type { Difficulty } from '../types/quest';
 
 export const getExpByDifficulty = (difficulty: Difficulty): number => {
   const rewards: Record<Difficulty, number> = {

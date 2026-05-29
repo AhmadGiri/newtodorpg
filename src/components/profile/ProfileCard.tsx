@@ -1,8 +1,7 @@
-import React from 'react';
-import { PlayerStats } from '../../types/quest';
+import type { PlayerStats } from '../../types/quest';
 import { Card } from '../ui/Card';
 import { ProgressBar } from '../ui/ProgressBar';
-import { Shield, Flame, Award } from 'lucide-react';
+import { Shield, Flame } from 'lucide-react';
 import { PLAYER_TITLES } from '../../data/titles';
 
 interface ProfileCardProps {

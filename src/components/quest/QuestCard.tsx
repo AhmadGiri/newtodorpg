@@ -1,5 +1,4 @@
-import React from 'react';
-import { Quest } from "../../types/quest";
+import type { Quest } from "../../types/quest";
 import { Card } from '../ui/Card';
 import { getDifficultyColor } from '../../utils/exp';
 import { CheckCircle2, Trash2, Calendar } from 'lucide-react';

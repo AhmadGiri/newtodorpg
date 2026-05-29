@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { Quest, PlayerStats, InventoryItem, Achievement, Difficulty } from './types/quest';
+import type { Quest, PlayerStats, InventoryItem, Achievement, Difficulty } from './types/quest';
 import { INITIAL_INVENTORY, INITIAL_ACHIEVEMENTS } from './data/titles';
 import { getExpByDifficulty } from './utils/exp';
 
