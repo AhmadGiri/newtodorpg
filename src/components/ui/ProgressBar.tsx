@@ -7,7 +7,7 @@ export default function ProgressBar({ value }: Props) {
     <div className="relative h-5 bg-zinc-900 rounded-full overflow-hidden">
   <div
     style={{
-      width: `${progress}%`,
+      width: `${value}%`,
     }}
     className="
       h-full

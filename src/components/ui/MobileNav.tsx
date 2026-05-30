@@ -4,6 +4,7 @@ import {
   Trophy,
   Backpack,
   BarChart3,
+  Settings,
 } from 'lucide-react'
 
 import { NavLink } from 'react-router-dom'
@@ -31,7 +32,7 @@ export default function MobileNav() {
         <Backpack />
       </NavLink>
       <NavLink to="/settings">
-        <Backpack />
+        <Settings />
       </NavLink>
     </div>
   )
