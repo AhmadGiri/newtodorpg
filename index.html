@@ -8,6 +8,11 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+  window.onerror = function(msg, url, line) {
+    alert("Error: " + msg + "\nLine: " + line);
+  };
+</script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

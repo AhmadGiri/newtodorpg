@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Difficulty } from '../../types/quest'
+import type { Difficulty } from '../../types/quest'
 
 interface Props {
   onAdd: (title: string, difficulty: Difficulty) => void

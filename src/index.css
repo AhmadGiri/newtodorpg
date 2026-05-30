@@ -1,21 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-orbitron: "Orbitron", sans-serif;
-  --font-poppins: "Poppins", sans-serif;
+:root {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  background: #09090b;
 }
 
 body {
-  background-color: rgb(9 9 11);
-  color: rgb(244 244 245);
-  font-family: var(--font-poppins);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(168,85,247,0.15), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(34,211,238,0.15), transparent 30%),
+    #09090b;
   overflow-x: hidden;
 }
 
-.system-grid {
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.glass {
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(63, 63, 70, 0.8);
+}
+
+.glow-purple {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
+}
+
+.grid-bg {
   background-image:
-    linear-gradient(to right, rgba(63, 63, 70, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(63, 63, 70, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
