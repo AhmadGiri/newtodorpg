@@ -15,6 +15,8 @@ export default function App() {
   const [quests, setQuests] = useLocalStorage<Quest[]>('quests', [])
   const [exp, setExp] = useLocalStorage<number>('exp', 0)
   const [streak, setStreak] = useLocalStorage<number>('streak', 0)
+  const [lastCompletedDate, setLastCompletedDate] =
+  useLocalStorage<string>('last-completed', '')
   const [toast, setToast] = useState('')
 
   const level = getLevel(exp)
@@ -34,10 +36,18 @@ export default function App() {
   }, [completedQuests, level, quests])
 
   useEffect(() => {
-    if (achievements.firstQuest) {
-      setToast('🏆 Achievement Unlocked: First Quest')
-    }
-  }, [achievements.firstQuest])
+  if (achievements.firstQuest)
+    setToast('🏆 First Quest Unlocked')
+
+  if (achievements.levelFive)
+    setToast('⚡ Reach Level 5')
+
+  if (achievements.tenQuests)
+    setToast('🔥 Complete 10 Quests')
+
+  if (achievements.legendaryHunter)
+    setToast('👑 Legendary Hunter')
+}, [achievements])
 
   useEffect(() => {
     if (!toast) return
@@ -51,7 +61,7 @@ export default function App() {
 
   const addQuest = (title: string, difficulty: Difficulty) => {
     const newQuest: Quest = {
-      id: crypto.randomUUID(),
+      id: Date.now().toString(),
       title,
       difficulty,
       completed: false,
@@ -62,23 +72,50 @@ export default function App() {
   }
 
   const completeQuest = (id: string) => {
-    const target = quests.find((q) => q.id === id)
+  const target = quests.find((q) => q.id === id)
 
-    if (!target || target.completed) return
+  if (!target || target.completed) return
 
-    setExp(exp + expMap[target.difficulty])
-    setStreak(streak + 1)
+  const today = new Date().toDateString()
 
-    setQuests(
-      quests.map((quest) =>
-        quest.id === id ? { ...quest, completed: true } : quest
+  if (!lastCompletedDate) {
+    setStreak(1)
+  } else {
+    const last = new Date(lastCompletedDate)
+
+    const diff =
+      Math.floor(
+        (Date.now() - last.getTime()) /
+          (1000 * 60 * 60 * 24)
       )
-    )
+
+    if (diff === 1) {
+      setStreak((prev) => prev + 1)
+    } else if (diff > 1) {
+      setStreak(1)
+    }
   }
+
+  setLastCompletedDate(today)
+
+  setExp(exp + expMap[target.difficulty])
+
+  setQuests(
+    quests.map((q) =>
+      q.id === id
+        ? { ...q, completed: true }
+        : q
+    )
+  )
+}
+  const unlockedCount =
+   Object.values(achievements).filter(Boolean).length
 
   const deleteQuest = (id: string) => {
     setQuests(quests.filter((q) => q.id !== id))
   }
+  const [username, setUsername] =
+  useLocalStorage('username', 'Giri Hunter')
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white grid-bg">
@@ -89,6 +126,7 @@ export default function App() {
 
       <div className="flex">
         <Sidebar />
+        <MobileNav />
 
         <main className="flex-1 p-6 md:p-10 space-y-8">
           <Dashboard

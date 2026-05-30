@@ -4,5 +4,6 @@ export const titles = [
   'React Slayer',
   'Dungeon Explorer',
   'Void Walker',
-  'System Conqueror',
+  'System User',
+  'Monarch Candidate',
 ]

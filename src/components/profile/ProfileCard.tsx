@@ -1,48 +1,35 @@
-import { useState } from 'react'
-import { Difficulty } from '../../types/quest'
+import GlowCard from '../ui/GlowCard'
+import { titles } from '../../data/titles'
+
+const title =
+  titles[level % titles.length]
 
 interface Props {
-  onAdd: (title: string, difficulty: Difficulty) => void
+  username: string
+  title: string
+  level: number
 }
 
-export default function QuestForm({ onAdd }: Props) {
-  const [title, setTitle] = useState('')
-  const [difficulty, setDifficulty] = useState<Difficulty>('Easy')
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!title.trim()) return
-
-    onAdd(title, difficulty)
-    setTitle('')
-  }
-
+export default function ProfileCard({ username, title, level }: Props) {
   return (
-    <form onSubmit={handleSubmit} className="glass rounded-2xl p-5">
-      <div className="flex flex-col md:flex-row gap-4">
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter new quest objective..."
-          className="flex-1 rounded-2xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 outline-none focus:border-violet-500"
-        />
+    <GlowCard className="glow-purple">
+      <div className="flex items-center gap-5">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center text-3xl font-bold font-orbitron">
+          G
+        </div>
 
-        <select
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-          className="rounded-2xl border border-zinc-700 bg-zinc-900 px-4 py-3"
-        >
-          <option>Easy</option>
-          <option>Medium</option>
-          <option>Hard</option>
-          <option>Legendary</option>
-        </select>
+        <div>
+          <h2 className="font-orbitron text-2xl font-bold text-white">
+            {username}
+          </h2>
 
-        <button className="rounded-2xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold transition-all hover:scale-105">
-          Accept Quest
-        </button>
+          <p className="text-violet-300">{title}</p>
+
+          <div className="mt-3 inline-flex rounded-full border border-cyan-400/40 px-4 py-1 text-cyan-300">
+            LVL {level}
+          </div>
+        </div>
       </div>
-    </form>
+    </GlowCard>
   )
 }
