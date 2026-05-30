@@ -1,6 +1,8 @@
 import {
   LayoutDashboard,
   ScrollText,
+  Trophy,
+  Backpack,
   BarChart3,
 } from 'lucide-react'
 
@@ -19,6 +21,17 @@ export default function MobileNav() {
 
       <NavLink to="/stats">
         <BarChart3 />
+      </NavLink>
+      
+      <NavLink to="/achievements">
+        <Trophy />
+      </NavLink>
+
+      <NavLink to="/inventory">
+        <Backpack />
+      </NavLink>
+      <NavLink to="/settings">
+        <Backpack />
       </NavLink>
     </div>
   )

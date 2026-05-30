@@ -7,6 +7,9 @@ interface Props {
   exp: number
   progress: number
   streak: number
+  username: string
+  rank: string
+  hunterTitle: string
 }
 
 export default function Dashboard({
@@ -14,13 +17,17 @@ export default function Dashboard({
   exp,
   progress,
   streak,
+  username,
+  hunterTitle,
+  rank
 }: Props) {
   return (
     <div className="space-y-6">
       <ProfileCard
-        username="Giri"
-        title="Shadow Hunter"
+        username={username}
+        title={hunterTitle}
         level={level}
+        rank={rank}
       />
 
       <GlowCard>

@@ -1,15 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Sidebar from './components/ui/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Stats from './pages/Stats'
-import QuestForm from './components/quest/QuestForm'
-import QuestCard from './components/quest/QuestCard'
+import QuestsPage from './pages/Quests'
+import AchievementsPage from './pages/Achievements'
+import InventoryPage from './pages/Inventory'
+import SettingsPage from './pages/Settings'
+import MobileNav from './components/ui/MobileNav'
 import Toast from './components/ui/Toast'
-import AchievementCard from './components/achievement/AchievementCard'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import type { Quest, Difficulty } from './types/quest'
 import { expMap } from './utils/exp'
 import { getLevel, getProgress } from './utils/level'
+import { getRank } from './utils/rank'
+import { titles } from './data/titles'
 
 export default function App() {
   const [quests, setQuests] = useLocalStorage<Quest[]>('quests', [])
@@ -18,9 +23,18 @@ export default function App() {
   const [lastCompletedDate, setLastCompletedDate] =
   useLocalStorage<string>('last-completed', '')
   const [toast, setToast] = useState('')
-
+  const [username, setUsername] =
+  useLocalStorage('username', 'Shadow Hunter')
+  const [shownAchievements, setShownAchievements] =
+  useLocalStorage<string[]>(
+    'shown-achievements',
+    []
+  )
   const level = getLevel(exp)
   const progress = getProgress(exp)
+  const rank = getRank(level)
+  const hunterTitle =
+  titles[level % titles.length]
 
   const completedQuests = quests.filter((q) => q.completed).length
 
@@ -36,18 +50,46 @@ export default function App() {
   }, [completedQuests, level, quests])
 
   useEffect(() => {
-  if (achievements.firstQuest)
-    setToast('🏆 First Quest Unlocked')
+  const checks = [
+    {
+      key: 'firstQuest',
+      unlocked: achievements.firstQuest,
+      text: '🏆 First Quest',
+    },
+    {
+      key: 'levelFive',
+      unlocked: achievements.levelFive,
+      text: '⚡ Reach Level 5',
+    },
+    {
+      key: 'tenQuests',
+      unlocked: achievements.tenQuests,
+      text: '🔥 Complete 10 Quests',
+    },
+    {
+      key: 'legendaryHunter',
+      unlocked: achievements.legendaryHunter,
+      text: '👑 Legendary Hunter',
+    },
+  ]
 
-  if (achievements.levelFive)
-    setToast('⚡ Reach Level 5')
+  checks.forEach((item) => {
+    if (
+      item.unlocked &&
+      !shownAchievements.includes(item.key)
+    ) {
+      setToast(item.text)
 
-  if (achievements.tenQuests)
-    setToast('🔥 Complete 10 Quests')
-
-  if (achievements.legendaryHunter)
-    setToast('👑 Legendary Hunter')
-}, [achievements])
+      setShownAchievements((prev) => [
+      ...prev,
+      item.key,
+    ])
+    }
+  })
+}, [
+  achievements,
+  shownAchievements,
+])
 
   useEffect(() => {
     if (!toast) return
@@ -76,12 +118,14 @@ export default function App() {
 
   if (!target || target.completed) return
 
-  const today = new Date().toDateString()
+  const today =
+  new Date().toISOString().split('T')[0]
 
   if (!lastCompletedDate) {
     setStreak(1)
   } else {
-    const last = new Date(lastCompletedDate)
+    const last =
+  new Date(`${lastCompletedDate}T00:00:00`)
 
     const diff =
       Math.floor(
@@ -90,10 +134,12 @@ export default function App() {
       )
 
     if (diff === 1) {
-      setStreak((prev) => prev + 1)
-    } else if (diff > 1) {
-      setStreak(1)
-    }
+  setStreak((prev) => prev + 1)
+} else if (diff > 1) {
+  setStreak(1)
+} else if (diff === 0) {
+  // hari yang sama
+}
   }
 
   setLastCompletedDate(today)
@@ -108,14 +154,9 @@ export default function App() {
     )
   )
 }
-  const unlockedCount =
-   Object.values(achievements).filter(Boolean).length
-
   const deleteQuest = (id: string) => {
     setQuests(quests.filter((q) => q.id !== id))
   }
-  const [username, setUsername] =
-  useLocalStorage('username', 'Giri Hunter')
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white grid-bg">
@@ -126,82 +167,94 @@ export default function App() {
 
       <div className="flex">
         <Sidebar />
-        <MobileNav />
 
-        <main className="flex-1 p-6 md:p-10 space-y-8">
-          <Dashboard
-            level={level}
-            exp={exp}
-            progress={progress}
-            streak={streak}
-          />
+        <main className="flex-1 p-6 md:p-10 pb-24 md:pb-10 space-y-8">
+          <Routes>
+  <Route
+    path="/"
+    element={
+      <Dashboard
+        level={level}
+        exp={exp}
+        progress={progress}
+        streak={streak}
+        username={username}
+        rank={rank}
+        hunterTitle={hunterTitle}
+      />
+    }
+  />
 
-          <section className="space-y-5">
-            <div>
-              <h2 className="font-orbitron text-3xl font-bold bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                Quest Board
-              </h2>
+  <Route
+    path="/quests"
+    element={
+      <QuestsPage
+        quests={quests}
+        addQuest={addQuest}
+        completeQuest={completeQuest}
+        deleteQuest={deleteQuest}
+      />
+    }
+  />
 
-              <p className="text-zinc-400 mt-2">
-                Accept missions and gain EXP.
-              </p>
-            </div>
+  <Route
+    path="/achievements"
+    element={
+      <AchievementsPage
+        achievements={achievements}
+      />
+    }
+  />
 
-            <QuestForm onAdd={addQuest} />
+  <Route
+    path="/inventory"
+    element={<InventoryPage />}
+  />
 
-            <div className="grid lg:grid-cols-2 gap-5">
-              {quests.map((quest) => (
-                <QuestCard
-                  key={quest.id}
-                  quest={quest}
-                  onComplete={() => completeQuest(quest.id)}
-                  onDelete={() => deleteQuest(quest.id)}
-                />
-              ))}
-            </div>
-          </section>
+  <Route
+    path="/stats"
+    element={
+      <Stats
+        completed={completedQuests}
+        exp={exp}
+        streak={streak}
+        level={level}
+        achievements={
+          Object.values(achievements)
+            .filter(Boolean)
+            .length
+        }
+      />
+    }
+  />
 
-          <section className="space-y-5">
-            <h2 className="font-orbitron text-3xl font-bold">
-              Achievements
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-5">
-              <AchievementCard
-                title="First Quest"
-                unlocked={achievements.firstQuest}
-              />
-
-              <AchievementCard
-                title="Reach Level 5"
-                unlocked={achievements.levelFive}
-              />
-
-              <AchievementCard
-                title="Complete 10 Quests"
-                unlocked={achievements.tenQuests}
-              />
-
-              <AchievementCard
-                title="Legendary Hunter"
-                unlocked={achievements.legendaryHunter}
-              />
-            </div>
-          </section>
-
-          <section className="space-y-5">
-            <h2 className="font-orbitron text-3xl font-bold">Stats</h2>
-
-            <Stats
-              completed={completedQuests}
-              exp={exp}
-              streak={streak}
-              level={level}
-              achievements={Object.values(achievements).filter(Boolean).length}
-            />
-          </section>
+  <Route
+    path="/settings"
+    element={
+      <SettingsPage
+        username={username}
+        setUsername={setUsername}
+      />
+    }
+  />
+  <Route
+  path="*"
+  element={
+    <Dashboard
+      level={level}
+      exp={exp}
+      progress={progress}
+      streak={streak}
+      username={username}
+      rank={rank}
+      hunterTitle={hunterTitle}
+    />
+  }
+/>
+</Routes>
         </main>
       </div>
+      <MobileNav />
     </div>
   )
 }
