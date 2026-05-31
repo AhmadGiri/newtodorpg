@@ -25,13 +25,13 @@ export default function QuestForm({ onAdd }: Props) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter new quest objective..."
-          className="flex-1 rounded-2xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 outline-none focus:border-violet-500"
+          className="w-full flex-1 rounded-2xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 outline-none focus:border-violet-500"
         />
 
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-          className="rounded-2xl border border-zinc-700 bg-zinc-900 px-4 py-3"
+          className="w-full md:w-auto rounded-2xl border border-zinc-700 bg-zinc-900 px-4 py-3"
         >
           <option>Easy</option>
           <option>Medium</option>
@@ -39,7 +39,7 @@ export default function QuestForm({ onAdd }: Props) {
           <option>Legendary</option>
         </select>
 
-        <button className="rounded-2xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold transition-all hover:scale-105">
+        <button className="w-full md:w-auto rounded-2xl bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-3 font-semibold transition-all hover:scale-105">
           Accept Quest
         </button>
       </div>

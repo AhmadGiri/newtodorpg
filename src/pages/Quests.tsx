@@ -38,7 +38,7 @@ export default function QuestsPage({
 
       <QuestForm onAdd={addQuest} />
 
-      <div className="flex gap-3 flex-wrap">
+      <div className="flex gap-3 flex-wrap overflow-x-auto pb-2">
         {['All', 'Easy', 'Medium', 'Hard', 'Legendary'].map(
           (item) => (
             <button
